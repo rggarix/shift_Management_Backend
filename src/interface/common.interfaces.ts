@@ -21,3 +21,12 @@ export interface PaginationOptions {
     page?: number;
     limit?: number;
   }
+
+  export interface AllStaffDataInterface {
+  _id?:string;
+    name?: string;
+    roleId?: string;
+    contactNumber?: number;
+    shiftPrefrenceId?: string;
+    roleName?: string;
+}

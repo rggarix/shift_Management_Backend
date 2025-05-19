@@ -1,12 +1,12 @@
-import { IDepartment, IStaffRoles } from "../interface/interface";
+import { IStaffRoles } from "../interface/interface";
 import staffRoleModel from "../models/staffRole.model";
 
 
 
-export const getDepartment = async () : Promise<IStaffRoles[] | null> => {
+export const getRoleById = async (_id: string) : Promise<IStaffRoles | null> => {
     try{
-        const departments = await staffRoleModel.find()
-        return departments;
+        const role = await staffRoleModel.findOne({_id})
+        return role;
     }
     catch(error :any) {
         console.error("Error creating staff in service:", error);

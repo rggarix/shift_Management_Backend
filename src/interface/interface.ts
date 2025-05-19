@@ -15,10 +15,11 @@ export interface IUser extends Document, ITimeStamps, ICreatedUpdatedBy {
 export interface IStaff extends Document, ITimeStamps, ICreatedUpdatedBy {
   _id:mongoose.Schema.Types.ObjectId;
   name: string;
-  departmentId: mongoose.Schema.Types.ObjectId;
   roleId: mongoose.Schema.Types.ObjectId;
   contactNumber: number;
   shiftPrefrenceId: mongoose.Schema.Types.ObjectId;
+  role?: { _id: mongoose.Schema.Types.ObjectId; name: string };
+  shiftPreference?: { _id: mongoose.Schema.Types.ObjectId; name: string };
 }
 
 export interface IShiftTypes extends Document, ITimeStamps, ICreatedUpdatedBy {
@@ -37,4 +38,11 @@ export interface IStaffRoles extends Document, ITimeStamps, ICreatedUpdatedBy {
   name: string;
   description: string;
   departmentId: mongoose.Schema.Types.ObjectId;
+}
+
+export interface IShift extends Document, ITimeStamps, ICreatedUpdatedBy {
+  _id:mongoose.Schema.Types.ObjectId;
+  staffId: mongoose.Schema.Types.ObjectId;
+  shiftType: mongoose.Schema.Types.ObjectId;
+  date: Date;
 }

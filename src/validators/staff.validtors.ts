@@ -6,10 +6,6 @@ export const staffValidator = [
     .notEmpty()
     .isMongoId()
     .withMessage("roleId is required"),
- body("departmentId")
-    .notEmpty()
-    .isMongoId()
-    .withMessage("departmentId is required"),
   body("shiftPrefrenceId")
     .notEmpty()
     .isMongoId()

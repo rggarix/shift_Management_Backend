@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import { errorResponse, successResponse } from "../utils/utils";
 import { createStaffService, getAllStaffService } from "../service/staff.service";
 import { validationResult } from "express-validator";
-import { IStaff } from "../interface/interface";
-import { PaginationOptions } from "../interface/common.interfaces";
+import { IShiftTypes, IStaff, IStaffRoles, IUser } from "../interface/interface";
+import { AllStaffDataInterface, PaginationOptions } from "../interface/common.interfaces";
+import { getRoleById } from "../service/staffRoles.service";
 
 
 export const createStaff = async (req: Request, res: Response) : Promise<void | Response> => {
@@ -30,9 +31,55 @@ export const getAllStaff = async (req: Request, res : Response) : Promise<void> 
     };
         const savedStaff = await getAllStaffService(pageOptions);
 
-        res.status(200).json(successResponse(savedStaff, "Staff Created Successfully"))
+        const finalData = await convertSampleData(savedStaff?.staff);
+
+        const data = {
+      data: finalData,
+      totalCount: savedStaff?.totalCount,
+      totalPages: savedStaff?.totalPages,
+      currentPage: savedStaff?.currentPage,
+    };
+
+        res.status(200).json(successResponse(data, "Staff Created Successfully"))
     }
     catch (error){
         res.status(500).json(errorResponse("Error in fetching a staff", error))
     }
 }
+
+export const convertSampleData = async (
+  savedSample: IStaff[] | null
+): Promise<AllStaffDataInterface[] | null> => {
+  if (savedSample === null) {
+    return null;
+  }
+
+  const promises: Promise<AllStaffDataInterface>[] = savedSample.map(
+    async (staff: IStaff) => {
+      let newData: AllStaffDataInterface = {};
+     
+      newData.roleId = staff?.roleId.toString();
+      // Add Department Name
+
+      const role: IStaffRoles | null = await getRoleById(
+        (staff?.roleId.toString())
+      )
+      if (role) {
+        newData.roleName = role.name;
+      }
+      newData.shiftPrefrenceId = staff?.shiftPrefrenceId.toString();
+      // Add Current Process Name
+
+      
+
+      newData.name = staff.name;
+      newData.contactNumber = staff.contactNumber;
+      console.log(newData);
+      return newData;
+    }
+  );
+
+  const finalSampleData = await Promise.all(promises);
+  console.log(finalSampleData);
+  return finalSampleData;
+};

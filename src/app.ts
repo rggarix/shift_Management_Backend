@@ -5,6 +5,7 @@ import UserRouter from '../src/route/user.route'
 import StaffRouter from '../src/route/staff.route'
 import StaffRolesRouter from '../src/route/staffRoles.route'
 import DepartmentRouter from '../src/route/department.route'
+import ShiftRouter from '../src/route/shift.route'
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use('/api/user',UserRouter)
 app.use('/api/staff',StaffRouter)
 app.use('/api/staffRoles',StaffRolesRouter)
 app.use('/api/department',DepartmentRouter)
+app.use('/api/shift',ShiftRouter)
 
 export default app;
